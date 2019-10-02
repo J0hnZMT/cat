@@ -4,7 +4,9 @@ import argparse
 def open_file(file_names):
     ''' Read and Display text file on screen '''
     for file_name in file_names:
+        # opening the selected files you want to read
         with open(file_name, "r") as f:
+            # printing every lines available in the file
             for line in f:
                 print(line)
 
@@ -12,17 +14,22 @@ def open_file(file_names):
 def write_file(file_names):
     ''' Write the new content to the selected file '''
     for file_name in file_names:
+        # Opening the file or creating the file if not existing
         with open(file_name, "w+") as f:
+            # input for content you want to insert
             f.write(input("Input your content here: "))
+        # then display the selected files you select or created
         with open(file_name, "r") as f:
+            # printing every lines available in the file
             for line in f:
                 print(line)
 
 
 def create_file(file_names):
     ''' Create a new text file '''
-    with open(file_name, "w") as f:
-        f.write(input("Input your content here: "))
+    for file_name in file_names:
+        with open(file_name, "w+") as f:
+            print("{} created".format(file_name))
 
 
 def append_file(file_names):
@@ -54,20 +61,19 @@ def cat_file(file_names):
         for line in f:
             print(line)
 
+
 def main():
+    ''' Main Function of the program '''
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group()
     parser.add_argument("file", nargs='*', help="The filename you want to display", type=str)
-    group.add_argument("-w", "--write", help="Create a new file and store the text",\
-                        action="store_true")
-    group.add_argument("-a", "--append", help="Append new text in the file specified", \
-                       action="store_true")
-    group.add_argument("-t", "--truncate", help="Delete the content of the selected files", \
-                       action="store_true")
-    group.add_argument("-c", "--cat", help="Concatenate the selected files", \
-                       action="store_true")
+    group.add_argument("-w", "--write", help="select/create a file/s and store the text", action="store_true")
+    group.add_argument("-a", "--append", help="Append new text in the file specified", action="store_true")
+    group.add_argument("-t", "--truncate", help="Delete the content of the selected files", action="store_true")
+    group.add_argument("-c", "--cat", help="Concatenate the selected files", action="store_true")
+    group.add_argument("-n", "--new", help="Create new file/s without contents", action="store_true")
     args = parser.parse_args()
-
+    # Conditional statement for commands
     if args.write:
         write_file(args.file)
     elif args.truncate:
@@ -76,8 +82,11 @@ def main():
         append_file(args.file)
     elif args.cat:
         cat_file(args.file)
+    elif args.new:
+        create_file(args.file)
     else:
         open_file(args.file)
+
 
 if __name__ == '__main__':
     main()
