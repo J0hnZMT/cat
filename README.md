@@ -1,7 +1,6 @@
 # cat
 Python Machine Problem 1 refactored now with argparse
-test.py have menus for the commands
-main.py have argparse
+
 To use type -h or --help to show the list of commands you can use.
 List of Commands
 1. -w, --write     = Select/create a file and store the text
