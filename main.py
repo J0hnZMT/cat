@@ -1,51 +1,83 @@
 import argparse
 
 
-def open_file(file_name):
+def open_file(file_names):
     ''' Read and Display text file on screen '''
-    with open(file_name, "r") as f:
-        for line in f:
-            print(line)
+    for file_name in file_names:
+        with open(file_name, "r") as f:
+            for line in f:
+                print(line)
 
 
-def write_file(file_name):
+def write_file(file_names):
+    ''' Write the new content to the selected file '''
+    for file_name in file_names:
+        with open(file_name, "w+") as f:
+            f.write(input("Input your content here: "))
+        with open(file_name, "r") as f:
+            for line in f:
+                print(line)
+
+
+def create_file(file_names):
     ''' Create a new text file '''
     with open(file_name, "w") as f:
         f.write(input("Input your content here: "))
 
 
-def append_file(file_name,file_content):
+def append_file(file_names):
     ''' Modifying file '''
-    with open(file_name, "a") as f:
-        for i in range(2):
-            f.write(file_content)
+    for file_name in file_names:
+        with open(file_name, "a") as f:
+            f.write(input("Input your content here: "))
+        with open(file_name, "r") as f:
+            for line in f:
+                print(line)
 
 
-def delete_file(file_name):
+def delete_file(file_names):
     ''' Delete the text file '''
-    with open(file_name, "w") as f:
-        f.truncate()
+    for file_name in file_names:
+        with open(file_name, "w") as f:
+            f.truncate()
 
 
-def cat_file(first_file,second_file,new_file):
+def cat_file(file_names):
     ''' File concatenation '''
-    file_names = [first_file,second_file]
-    with open(new_file, 'w') as f:
+    # file_names = [file_names]
+    new_file = input("Name of new file: ")
+    with open(new_file, 'w+') as f:
         for f_name in file_names:
-            with open(f_name) as infile:
-                f.write(infile.read())
-
+            with open(f_name) as inf:
+                f.write(inf.read())
+    with open(new_file, "r") as f:
+        for line in f:
+            print(line)
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("file", help="The filename you want to display", type=str)
-    # parser.add_argument("content", help="The content of the file", type = str)
-    # parser.add_argument("-w", "--write", help="Create a new file and store the text",\
-    #                     action="store_true")
+    group = parser.add_mutually_exclusive_group()
+    parser.add_argument("file", nargs='*', help="The filename you want to display", type=str)
+    group.add_argument("-w", "--write", help="Create a new file and store the text",\
+                        action="store_true")
+    group.add_argument("-a", "--append", help="Append new text in the file specified", \
+                       action="store_true")
+    group.add_argument("-t", "--truncate", help="Delete the content of the selected files", \
+                       action="store_true")
+    group.add_argument("-c", "--cat", help="Concatenate the selected files", \
+                       action="store_true")
     args = parser.parse_args()
-    open_file(args.file)
-    # if args.write:
-    #     write_file(args.file, args.content)
+
+    if args.write:
+        write_file(args.file)
+    elif args.truncate:
+        delete_file(args.file)
+    elif args.append:
+        append_file(args.file)
+    elif args.cat:
+        cat_file(args.file)
+    else:
+        open_file(args.file)
 
 if __name__ == '__main__':
     main()
