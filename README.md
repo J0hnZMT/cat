@@ -1,4 +1,4 @@
-# cat
+# cat function utilizing Python
 Python Machine Problem 1 refactored now with argparse
 
 To use type -h or --help to show the list of commands you can use.
